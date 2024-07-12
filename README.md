@@ -1,7 +1,7 @@
 # Hospital-Management-System
 This is a MERN (MongoDB, Express.js, React.js, Node.js) web application for efficient hospital management. The goal of this project is to develop a comprehensive and user-friendly system that caters to the needs of hospitals, administrators, doctors, and patients alike. Please note that this project is currently under construction and is continuously being improved and expanded upon.
 
-Features
+## Features
 Role-based User Interface: The system provides different user interfaces tailored to the specific needs of administrators, doctors, and patients, ensuring a seamless and intuitive experience for each user type.
 Real-time Updates: Leveraging the power of React.js and modern web technologies, our web application delivers real-time updates and notifications to keep all stakeholders informed about important events and changes.
 Graphical Dashboard: The admin dashboard includes interactive graphs and charts, offering a visual overview of key metrics such as appointments, resource utilization, and financial insights.
