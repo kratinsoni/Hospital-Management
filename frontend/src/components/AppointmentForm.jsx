@@ -42,7 +42,7 @@ const AppointmentForm = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       const { data } = await axios.get(
-        "http://localhost:4000/api/v1/user/doctors",
+        "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/doctors",
         { withCredentials: true }
       );
       setDoctors(data.doctors);
@@ -61,7 +61,7 @@ const AppointmentForm = () => {
     try {
       const hasVisitedBool = Boolean(hasVisited); //the value is returned as sgtring and hence needs to be converted in boolean form
       const { data } = await axios.post(
-        "http://localhost:4000/api/v1/appointment/post",
+        "https://hospital-management-system-3-3tfn.onrender.com/api/v1/appointment/post",
         {
           firstName,
           lastName,

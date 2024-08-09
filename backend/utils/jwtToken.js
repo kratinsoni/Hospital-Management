@@ -14,6 +14,8 @@ export const generateToken = (user, message, statusCode, res) => {
           // 7 days x 24 hrs x 60 minutes x 60 secs x 1000 ms
         ),
         httpOnly: true, //
+        secure: true,
+        sameSite: "None",
       })
       .json({
         success: true,

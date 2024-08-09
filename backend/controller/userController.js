@@ -178,6 +178,8 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     .cookie("adminToken", "", {      //It sets a cookie named adminToken with an empty value 
       httpOnly: true,                   //and an expiration date set to the current time, effectively deleting the cookie.
       expires: new Date(Date.now()),
+      secure: true,
+        sameSite: "None",
     })
     .json({
       success: true,
@@ -194,6 +196,8 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
     .cookie("patientToken", "", {
       httpOnly: true,
       expires: new Date(Date.now()),
+      secure: true,
+      sameSite: "None",
     })
     .json({
       success: true,

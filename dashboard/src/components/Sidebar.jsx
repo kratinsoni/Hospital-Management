@@ -21,7 +21,7 @@ const Sidebar = () => {
   //function to handle logout same as in frontend
   const handleLogout = async () => {
     await axios
-      .get("http://localhost:4000/api/v1/user/admin/logout", {
+      .get("https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/admin/logout", {
         withCredentials: true,
       })
       .then((res) => {
