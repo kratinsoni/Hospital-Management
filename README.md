@@ -2,10 +2,10 @@
 This is a MERN (MongoDB, Express.js, React.js, Node.js) web application for efficient hospital management. The goal of this project is to develop a comprehensive and user-friendly system that caters to the needs of hospitals, administrators, doctors, and patients alike. Please note that this project is currently under construction and is continuously being improved and expanded upon.
 
 ## FRONTEND URL :
-https://hospital-management-system-7m6s.vercel.app/
+https://hospital-management-sanjeevani.web.app/
 
-## DASHBOARD URL :
-https://hospital-management-system-inky.vercel.app/login
+## DASHBOARD URL :[
+https://hospital-management--app-17.web.app/
 
 ## Features
 Role-based User Interface: The system provides different user interfaces tailored to the specific needs of administrators, doctors, and patients, ensuring a seamless and intuitive experience for each user type.
