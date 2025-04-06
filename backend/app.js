@@ -14,14 +14,6 @@ dotenv.config();
 
 const app=express();
 
-console.log(
-  "Allowed origins:",
-  process.env.FRONTEND_URL,
-  process.env.DASHBOARD_URL,
-  process.env.DOCTOR_URL,
-);
-
-
 //creating a middle wares to connect frontend with backend
 app.use(
     cors({
