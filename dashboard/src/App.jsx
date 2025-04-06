@@ -7,7 +7,6 @@ import Messages from "./components/Messages";
 import Doctors from "./components/Doctors";
 import AddNewAdmin from "./components/AddNewAdmin";
 import Sidebar from "./components/Sidebar";
-import LoginForm from "./components/LoginForm.jsx";
 
 import { Context } from "./main";
 import axios from "axios";
@@ -51,8 +50,6 @@ const App = () => {
         <Route path="/admin/addnew" element={<AddNewAdmin />} />
         <Route path="/messages" element={<Messages />} />
         <Route path="/doctors" element={<Doctors />} />
-        <Route path="/doctorLogin" element={<LoginForm/>} />
-        <Route path="/doctorDashboard" element={<DoctorDashboard/>} />
       </Routes>
       <ToastContainer position="top-center" />
     </Router>

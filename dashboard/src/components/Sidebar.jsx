@@ -28,12 +28,12 @@ const Sidebar = () => {
       .then((res) => {
         toast.success(res.data.message);
         setIsAuthenticated(false);
+        navigateTo("/login");
       })
       .catch((err) => {
         toast.error(err.response.data.message);
       });
   };
-
 
   //function to move from one page to another through the links created below in div
   const navigateTo = useNavigate();
@@ -59,19 +59,13 @@ const Sidebar = () => {
     setShow(!show);
   };
 
-
-
-
-
   return (
     //many functions to be wrapped inside empty fragments
-    <> 
+    <>
       <nav
         style={!isAuthenticated ? { display: "none" } : { display: "flex" }}
         className={show ? "show sidebar" : "sidebar"}
       >
-
-
         <div className="links">
           <TiHome onClick={gotoHomePage} />
           <FaUserDoctor onClick={gotoDoctorsPage} />
@@ -80,8 +74,6 @@ const Sidebar = () => {
           <AiFillMessage onClick={gotoMessagesPage} />
           <RiLogoutBoxFill onClick={handleLogout} />
         </div>
-
-
       </nav>
 
       <div
