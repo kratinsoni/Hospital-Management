@@ -17,7 +17,8 @@ const app=express();
 console.log(
   "Allowed origins:",
   process.env.FRONTEND_URL,
-  process.env.DASHBOARD_URL
+  process.env.DASHBOARD_URL,
+  process.env.DOCTOR_URL,
 );
 
 
