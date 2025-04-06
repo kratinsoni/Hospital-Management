@@ -12,13 +12,11 @@ import appointmentRouter from "./router/appointmentRouter.js";
 
 
 const app=express();
-config({ path: "./config/config.env" });
 
 //creating a middle wares to connect frontend with backend
 app.use(
     cors({
         origin: [process.env.FRONTEND_URL, process.env.DASHBOARD_URL],
-        methods: ["GET", "POST", "PUT", "DELETE"],
         credentials: true,
  })
 );

@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { toast } from "react-toastify";
+import { URL } from "../../constants.js";
 
 const MessageForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -15,7 +16,7 @@ const MessageForm = () => {
     try {
       await axios
         .post(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/message/send",
+          `${URL}/message/send`,
           { firstName, lastName, email, phone, message },
           {
             withCredentials: true,

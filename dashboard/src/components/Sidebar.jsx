@@ -7,6 +7,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { FaUserDoctor } from "react-icons/fa6";
 import { MdAddModerator } from "react-icons/md";
 import { IoPersonAddSharp } from "react-icons/io5";
+import { URL } from "../../constants.js";
 
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -21,7 +22,7 @@ const Sidebar = () => {
   //function to handle logout same as in frontend
   const handleLogout = async () => {
     await axios
-      .get("https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/admin/logout", {
+      .get(`${URL}/user/admin/logout`, {
         withCredentials: true,
       })
       .then((res) => {

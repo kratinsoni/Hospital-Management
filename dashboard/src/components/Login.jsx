@@ -3,6 +3,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import axios from "axios";
+import { URL } from "../../constants.js";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/login",
+          `${URL}/user/login`,
           { email, password, confirmPassword, role: "Admin" },
           {
             withCredentials: true,

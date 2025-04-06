@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import { URL } from "../../constants.js";
 
 const Register = () => {
   const { isAuthenticated, setIsAuthenticated } = useContext(Context);
@@ -23,7 +24,7 @@ const Register = () => {
     try {
       await axios
         .post(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/patient/register",
+          `${URL}/user/patient/register`,
           { firstName, lastName, email, phone, nic, dob, gender, password, role: "Patient "},
           {
             withCredentials: true,

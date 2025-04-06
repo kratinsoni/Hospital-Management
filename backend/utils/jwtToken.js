@@ -4,7 +4,15 @@ export const generateToken = (user, message, statusCode, res) => {
 
     // Determine the cookie name based on the user's role
     //becasue there are 2 frontend , one for admin and one for patient
-    const cookieName = user.role === 'Admin' ? 'adminToken' : 'patientToken';
+    let cookieName;
+    if (user.role === "Admin") {
+        cookieName = "adminToken";
+    } else if (user.role === "Patient") {
+        cookieName = "patientToken";
+    } else if (user.role === "Doctor") {
+        cookieName = "doctorToken";
+    }
+    // Set the cookie with the token and other options
   
     res
       .status(statusCode)

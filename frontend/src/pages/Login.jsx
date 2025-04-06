@@ -3,6 +3,7 @@ import React, { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { Context } from "../main";
 import { Link, useNavigate, Navigate } from "react-router-dom";
+import { URL } from "../../constants.js";
 
 
 // LOGIN PAGE IS FOR PATIENTS ONLY
@@ -30,7 +31,7 @@ const Login = () => {
     try {
       await axios
         .post(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/login",
+          `${URL}/user/login`,
           { email, password, confirmPassword, role: "Patient" },
           {
             withCredentials: true,

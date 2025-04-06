@@ -1,18 +1,21 @@
 import express from "express";
 import {
-    addNewAdmin,
-    addNewDoctor,
-    getAllDoctors,
-    getUserDetails,
-    login,
-    logoutAdmin,
-    logoutPatient,
-    patientRegister,
-  } from "../controller/userController.js";
+  addNewAdmin,
+  addNewDoctor,
+  getAllDoctors,
+  getUserDetails,
+  login,
+  logoutAdmin,
+  logoutPatient,
+  patientRegister,
+  logoutDoctor,
+  updateDoctorDetails,
+} from "../controller/userController.js";
 
 import {
     isAdminAuthenticated,
     isPatientAuthenticated,
+    isDoctorAuthenticated,
   } from "../middlewares/auth.js";
 
 const router = express.Router();
@@ -31,9 +34,16 @@ router.get("/doctors", getAllDoctors);
 
 router.get("/patient/me", isPatientAuthenticated, getUserDetails);
 router.get("/admin/me", isAdminAuthenticated, getUserDetails);
+router.get("/doctor/me", isDoctorAuthenticated, getUserDetails);
 
 router.get("/patient/logout", isPatientAuthenticated, logoutPatient);
 router.get("/admin/logout", isAdminAuthenticated, logoutAdmin);
+router.get("/doctor/logout", isDoctorAuthenticated, logoutDoctor);
+router.post(
+  "/editdoctor/:doctorId",
+  isDoctorAuthenticated,
+  updateDoctorDetails
+);
 
 
 

@@ -5,18 +5,20 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { GoCheckCircleFill } from "react-icons/go";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { URL } from "../../constants.js";
 
 
 // for getting all the appointments
 const Dashboard = () => {
   const [appointments, setAppointments] = useState([]);
+  const [doctors, setDoctors] = useState(0);
 
   //wverytime when page refreshes
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
         const { data } = await axios.get(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/appointment/getall",
+          `${URL}/appointment/getall`,
           { withCredentials: true }
         );
         setAppointments(data.appointments);
@@ -30,7 +32,7 @@ const Dashboard = () => {
   const handleUpdateStatus = async (appointmentId, status) => {
     try {
       const { data } = await axios.put(
-        `https://hospital-management-system-3-3tfn.onrender.com/api/v1/appointment/update/${appointmentId}`,
+        `${URL}/appointment/update/${appointmentId}`,
         { status },
         { withCredentials: true }
       );
@@ -52,7 +54,20 @@ const Dashboard = () => {
     return <Navigate to={"/login"} />;
   }
 
-
+  useEffect(() => {
+      const fetchDoctors = async () => {
+        try {
+          const { data } = await axios.get(
+            `${URL}/user/doctors`,
+            { withCredentials: true }
+          );
+          setDoctors(data.doctors.length);
+        } catch (error) {
+          toast.error(error.response.data.message);
+        }
+      };
+      fetchDoctors();
+    }, []);
 
 
   return (
@@ -80,7 +95,7 @@ const Dashboard = () => {
           </div>
           <div className="thirdBox">
             <p>Registered Doctors</p>
-            <h3>20</h3>
+            <h3>{doctors}</h3>
           </div>
         </div>
         <div className="banner">

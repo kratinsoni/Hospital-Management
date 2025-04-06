@@ -2,8 +2,8 @@ import React, { useContext, useEffect } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home.jsx";
-import Appointment from "./pages/Appointment.jsx"
-import AboutUs from "./pages/AboutUs.jsx"
+import Appointment from "./pages/Appointment.jsx";
+import AboutUs from "./pages/AboutUs.jsx";
 import Register from "./pages/Register.jsx";
 import Footer from "./components/Footer.jsx";
 import Navbar from "./components/Navbar.jsx";
@@ -12,19 +12,16 @@ import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
 import { Context } from "./main";
 import Login from "./pages/Login";
+import { URL } from "../constants.js";
 const App = () => {
-  const { isAuthenticated, setIsAuthenticated, setUser } =
-    useContext(Context);
+  const { isAuthenticated, setIsAuthenticated, setUser } = useContext(Context);
 
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await axios.get(
-          "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/patient/me",
-          {
-            withCredentials: true,
-          }
-        );
+        const response = await axios.get(`${URL}/user/patient/me`, {
+          withCredentials: true,
+        });
         setIsAuthenticated(true);
         setUser(response.data.user);
       } catch (error) {

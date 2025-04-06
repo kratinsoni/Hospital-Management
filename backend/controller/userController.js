@@ -3,23 +3,25 @@ import { User } from "../models/userSchema.js";
 import ErrorHandler from "../middlewares/errorMiddleware.js";
 import { generateToken } from "../utils/jwtToken.js";
 import cloudinary from "cloudinary";
+import { Appointment } from "../models/appointmentSchema.js";
 
+import bcrypt from "bcrypt";
 
 /////////// 1. Patient Register
 export const patientRegister = catchAsyncErrors(async (req, res, next) => {
-  const { 
+  const {
     firstName,
-    lastName, 
+    lastName,
     email,
     phone,
     password,
     gender,
-    dob, 
-    nic, 
-    role 
+    dob,
+    nic,
+    role,
   } = req.body;
 
- // if any of the above missing
+  // if any of the above missing
   if (
     !firstName ||
     !lastName ||
@@ -31,7 +33,6 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
     !nic ||
     !role
   ) {
-
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
 
@@ -51,16 +52,14 @@ export const patientRegister = catchAsyncErrors(async (req, res, next) => {
     nic,
     role: "Patient",
   });
-//using the function make the code more modular and reusable
+  //using the function make the code more modular and reusable
   generateToken(user, "User Registered!", 200, res);
 
   // res.status(200).json({       //using the res object from a Express server to send a JSON response with a status code of 200 (which indicates a successful request)
   //   success: true,
   //   message: "user Registered!",
   // });
-
 });
-
 
 ////////               2. NOW CREATING LOGIN FUNCTION         ///////////////////
 export const login = catchAsyncErrors(async (req, res, next) => {
@@ -71,20 +70,21 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   }
   if (password !== confirmPassword) {
     return next(
-      new ErrorHandler("Password & Confirm Password Do Not Match!", 400));
+      new ErrorHandler("Password & Confirm Password Do Not Match!", 400)
+    );
   }
   //now we check if user already exists in database or not
 
   const user = await User.findOne({ email }).select("+password");
-// mongoose gives you findone
-  //finds a user in the database with a specified email and includes the password field in the result. 
+  // mongoose gives you findone
+  //finds a user in the database with a specified email and includes the password field in the result.
   //The await keyword is used to wait for the findOne() method to return the result before continuing execution.
   // The select("+password") method is used to explicitly include the password field in the result.
-// +  string
+  // +  string
   if (!user) {
     return next(new ErrorHandler("Invalid Email Or Password!", 400));
   }
-  
+
   const isPasswordMatch = await user.comparePassword(password);
   if (!isPasswordMatch) {
     return next(new ErrorHandler("Invalid Email Or Password!", 400));
@@ -95,24 +95,11 @@ export const login = catchAsyncErrors(async (req, res, next) => {
   generateToken(user, "User Login Successfully!", 200, res);
 });
 
-
-
-
-
 ////////////        3.  NEW FUNCTION FOR ADDING NEW ADMIN        //////////
 
 export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
-  const {
-    firstName,
-    lastName, 
-    email,
-    phone,
-    password,
-    gender,
-    dob, 
-    nic, 
-
-  } = req.body;
+  const { firstName, lastName, email, phone, password, gender, dob, nic } =
+    req.body;
   if (
     !firstName ||
     !lastName ||
@@ -121,15 +108,16 @@ export const addNewAdmin = catchAsyncErrors(async (req, res, next) => {
     !password ||
     !gender ||
     !dob ||
-    !nic 
+    !nic
   ) {
-
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
 
   const isRegistered = await User.findOne({ email });
   if (isRegistered) {
-    return next(new ErrorHandler(`${isRegistered.role}  With This Email Already Exists!`));
+    return next(
+      new ErrorHandler(`${isRegistered.role}  With This Email Already Exists!`)
+    );
   }
   // IF PREVIOUSLY NOT FOUND THEN WE CREATE NEW ADMIN
 
@@ -170,16 +158,16 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
-
- ////////////            6.Logout function for dashboard admin        ///////////////////
- export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
+////////////            6.Logout function for dashboard admin        ///////////////////
+export const logoutAdmin = catchAsyncErrors(async (req, res, next) => {
   res
     .status(200)
-    .cookie("adminToken", "", {      //It sets a cookie named adminToken with an empty value 
-      httpOnly: true,                   //and an expiration date set to the current time, effectively deleting the cookie.
+    .cookie("adminToken", "", {
+      //It sets a cookie named adminToken with an empty value
+      httpOnly: true, //and an expiration date set to the current time, effectively deleting the cookie.
       expires: new Date(Date.now()),
       secure: true,
-        sameSite: "None",
+      sameSite: "None",
     })
     .json({
       success: true,
@@ -187,7 +175,20 @@ export const getUserDetails = catchAsyncErrors(async (req, res, next) => {
     });
 });
 
-
+export const logoutDoctor = catchAsyncErrors(async (req, res, next) => {
+  res
+    .status(200)
+    .cookie("doctorToken", "", {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+      secure: true,
+      sameSite: "None",
+    })
+    .json({
+      success: true,
+      message: "Doctor Logged Out Successfully.",
+    });
+});
 
 //////////////           7. Logout function for  patient                  /////////////////////
 export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
@@ -204,8 +205,6 @@ export const logoutPatient = catchAsyncErrors(async (req, res, next) => {
       message: "Patient Logged Out Successfully.",
     });
 });
-
-
 
 //////////////////                8.FUCNTION for ADDING NEW DOC                 ///////////////////////
 export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
@@ -246,14 +245,16 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
     return next(new ErrorHandler("Please Fill Full Form!", 400));
   }
 
-          //if all data provided  then we find user and if it already exists
+  //if all data provided  then we find user and if it already exists
   const isRegistered = await User.findOne({ email });
   if (isRegistered) {
     return next(
-      new ErrorHandler(`${isRegistered.role} already registered with this email`, 400)
+      new ErrorHandler(
+        `${isRegistered.role} already registered with this email`,
+        400
+      )
     );
   }
-
 
   ///////////////        9. Posting image in cloudinary  //
   const cloudinaryResponse = await cloudinary.uploader.upload(
@@ -268,7 +269,6 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
       new ErrorHandler("Failed To Upload Doctor Avatar To Cloudinary", 500)
     );
   }
-
 
   const doctor = await User.create({
     firstName,
@@ -293,12 +293,47 @@ export const addNewDoctor = catchAsyncErrors(async (req, res, next) => {
   });
 });
 
+export const updateDoctorDetails = catchAsyncErrors(async (req, res, next) => {
+  const { doctorId } = req.params; // Extracting doctorId from request parameters
+  const { firstName, lastName, email, phone, doctorDepartment, password } =
+    req.body; // Extracting updated doctor details from request body
 
+  // Find the doctor by ID and update their details
+  let updatedDoctor;
+  if (!password) {
+    updatedDoctor = await User.findByIdAndUpdate(
+      doctorId,
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        doctorDepartment, // Password should be hashed before saving in a real application
+      },
+      { new: true } // Return the updated document
+    );
+  } else {
+    const hashedPassword = await bcrypt.hash(password, 10); 
+    updatedDoctor = await User.findByIdAndUpdate(
+      doctorId,
+      {
+        firstName,
+        lastName,
+        email,
+        phone,
+        doctorDepartment,
+        password: hashedPassword 
+      },
+      { new: true } // Return the updated document
+    );
+  }
+  if (!updatedDoctor) {
+    return next(new ErrorHandler("Doctor not found", 404));
+  }
 
-
-
-
-
-
-
-
+  res.status(200).json({
+    success: true,
+    message: "Doctor details updated successfully",
+    updatedDoctor,
+  });
+});

@@ -4,6 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Context } from "../main";
+import { URL } from "../../constants.js";
 
 
 
@@ -15,7 +16,7 @@ const Navbar = () => {
 ///////////////////3. logout and login  depending on is Authenticated
   const handleLogout = async () => {
     await axios
-      .get("https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/patient/logout", {
+      .get(`${URL}/user/patient/logout`, {
         withCredentials: true,
       })
       .then((res) => {

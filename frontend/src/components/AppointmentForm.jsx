@@ -2,7 +2,8 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { useNavigate } from 'react-router-dom'
+import { useNavigate } from "react-router-dom";
+import { URL } from "../../constants.js";
 
 const AppointmentForm = () => {
   const [firstName, setFirstName] = useState("");
@@ -32,36 +33,30 @@ const AppointmentForm = () => {
     "ENT",
   ];
 
-  const navigateTo = useNavigate()
-
-
+  const navigateTo = useNavigate();
 
   ///////////function to get all doctors registered
 
   const [doctors, setDoctors] = useState([]);
   useEffect(() => {
     const fetchDoctors = async () => {
-      const { data } = await axios.get(
-        "https://hospital-management-system-3-3tfn.onrender.com/api/v1/user/doctors",
-        { withCredentials: true }
-      );
+      const { data } = await axios.get(`${URL}/user/doctors`, {
+        withCredentials: true,
+      });
       setDoctors(data.doctors);
       console.log(data.doctors);
     };
     fetchDoctors();
   }, []);
 
-
-
-
-///////////////// function for handleAppointment
+  ///////////////// function for handleAppointment
 
   const handleAppointment = async (e) => {
     e.preventDefault();
     try {
       const hasVisitedBool = Boolean(hasVisited); //the value is returned as sgtring and hence needs to be converted in boolean form
       const { data } = await axios.post(
-        "https://hospital-management-system-3-3tfn.onrender.com/api/v1/appointment/post",
+        `${URL}/appointment/post`,
         {
           firstName,
           lastName,
@@ -102,8 +97,8 @@ const AppointmentForm = () => {
     }
   };
 
-/////////////////////////////////////////////////////////////////////////////////////////////
-//////////////////////////////    same as register form
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  //////////////////////////////    same as register form
   return (
     <>
       <div className="container form-component appointment-form">
@@ -166,12 +161,6 @@ const AppointmentForm = () => {
             />
           </div>
 
-
-
-
-
-
-
           <div>
             <select
               value={department}
@@ -181,10 +170,12 @@ const AppointmentForm = () => {
                 setDoctorLastName("");
               }}
             >
-                {/**Using a map //////////*/}
+              {/**Using a map //////////*/}
               {departmentsArray.map((depart, index) => {
                 return (
-                  <option value={depart} key={index}>  {/* all departments would be formed as options in a dropdown menu */}
+                  <option value={depart} key={index}>
+                    {" "}
+                    {/* all departments would be formed as options in a dropdown menu */}
                     {depart}
                   </option>
                 );
@@ -192,13 +183,16 @@ const AppointmentForm = () => {
             </select>
             {/** here we already filtered out doctors from depatm */}
             <select
-              value={`${doctorFirstName} ${doctorLastName}`}
+              value={
+                doctorFirstName && doctorLastName
+                  ? `${doctorFirstName}-${doctorLastName}`
+                  : ""
+              }
               onChange={(e) => {
-                const [firstName, lastName] = e.target.value.split(" ");
+                const [firstName, lastName] = e.target.value.split("-");
                 setDoctorFirstName(firstName);
                 setDoctorLastName(lastName);
               }}
-              //if department not selected yet then the above should be disabled as well
               disabled={!department}
             >
               <option value="">Select Doctor</option>
@@ -206,7 +200,7 @@ const AppointmentForm = () => {
                 .filter((doctor) => doctor.doctorDepartment === department)
                 .map((doctor, index) => (
                   <option
-                    value={`${doctor.firstName} ${doctor.lastName}`}
+                    value={`${doctor.firstName}-${doctor.lastName}`}
                     key={index}
                   >
                     {doctor.firstName} {doctor.lastName}
@@ -215,14 +209,6 @@ const AppointmentForm = () => {
             </select>
           </div>
 
-
-
-
-
-
-
-
-
           <textarea
             rows="10"
             value={address}
@@ -230,8 +216,7 @@ const AppointmentForm = () => {
             placeholder="Address"
           />
 
-
-{/**The down left part styles */}
+          {/**The down left part styles */}
           <div
             style={{
               gap: "10px",
@@ -248,12 +233,7 @@ const AppointmentForm = () => {
             />
           </div>
 
-
-
           <button style={{ margin: "0 auto" }}>GET APPOINTMENT</button>
-
-
-
         </form>
       </div>
     </>
