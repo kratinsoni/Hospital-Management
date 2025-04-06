@@ -9,14 +9,13 @@ import { Context } from "../main";
 import { toast } from "react-toastify";
 import axios from "axios";
 import { URL } from "../../constants.js";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 function DoctorDashboard({
   doctor,
   showLoginSuccess
 }) {
   const [activeTab, setActiveTab] = useState("dashboard");
-  const navigate = useNavigate();
   
 
   const onLogout = () => {
@@ -24,7 +23,7 @@ function DoctorDashboard({
       withCredentials: true,
     });
     console.log(response.data);
-    navigate("/login");
+    window.location.reload();
     toast.success("Logout Successfully!");
     
   }
